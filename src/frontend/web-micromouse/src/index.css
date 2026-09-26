@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", sans-serif;
+
+  --color-piso: #1c1c1e;
+  --color-pino: #3a3a40;
+  --color-parede: #fbfbfa;
+  --color-topo: #d7262b;
+  --color-tinta: #1c1c1e;
+  --color-apagado: #6e6e73;
+  --color-linha: #e8e6e3;
+  --color-trajeto: #f5c211;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-piso);
+    background-image: radial-gradient(var(--color-pino) 1.5px, transparent 2px);
+    background-size: 36px 36px;
+  }
+}
