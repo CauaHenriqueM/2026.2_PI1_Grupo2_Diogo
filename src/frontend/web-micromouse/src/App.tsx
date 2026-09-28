@@ -1,11 +1,15 @@
-
+import {Sidebar} from './components/Sidebar'
 
 function App() {
 
   return (
-    <>
-      <div className="text-3xl font-extrabold underline">ola tudo em</div>
-    </>
+    <div className="flex h-screen w-screen bg-[#08111F] sm:flex-row flex-col ">
+      <Sidebar></Sidebar>
+
+
+
+   
+    </div>
   )
 }
 
