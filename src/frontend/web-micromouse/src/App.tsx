@@ -1,12 +1,40 @@
+import { BatteryCard } from "./components/telemetria/BatteryCard";
+import { ConnectionCard } from "./components/telemetria/ConnectionCard";
+import { GyroscopeCard } from "./components/telemetria/GyroscopeCard";
+import { MotorRPMCard } from "./components/telemetria/MotorRPMCard";
+import { SpeedCard } from "./components/telemetria/SpeedCard";
+import { useTelemetry } from "./hooks/useTelemetry";
 
+import "./components/telemetria/telemetry.css";
 
 function App() {
+  const telemetry = useTelemetry();
 
   return (
-    <>
-      <div className="text-3xl font-extrabold underline">ola tudo em</div>
-    </>
-  )
+    <main className="telemetry-page">
+      <div className="telemetry-grid">
+        <ConnectionCard
+          connected={telemetry.connected}
+        />
+
+        <BatteryCard
+          battery={telemetry.battery}
+        />
+
+        <SpeedCard
+          speed={telemetry.averageSpeed}
+        />
+
+        <MotorRPMCard
+          motors={telemetry.motors}
+        />
+
+        <GyroscopeCard
+          gyro={telemetry.gyro}
+        />
+      </div>
+    </main>
+  );
 }
 
-export default App
+export default App;
