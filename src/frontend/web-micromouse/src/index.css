@@ -1,18 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
 @import "tailwindcss";
 
-/* cores e fonte do Figma */
+/* cores do Figma usadas na página do labirinto */
 @theme {
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
-
-  --color-fundo: #070f1c;
   --color-card: #0b1626;
   --color-bloco: #0e1b2d;
   --color-grade: #1e3a5f;
 }
 
-@layer base {
-  body {
-    background-color: var(--color-fundo);
+body {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+
+:root {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
