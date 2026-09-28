@@ -5,11 +5,16 @@ const C = 40
 const PASSO_MS = 400
 const ANGULO: Record<Posicao['direcao'], number> = { N: 0, L: 90, S: 180, O: 270 }
 
-// soma cada giro pelo lado mais curto (O → N = +90°, não −270°), senao o kart da a volta errada.
+// soma cada giro pelo lado mais curto (O → N = +90°, não −270°), senao o robô da a volta errada.
 const anguloAcumulado = (seq: Posicao[]) =>
   seq.reduce((acc, p) => acc + ((((ANGULO[p.direcao] - acc) % 360) + 540) % 360) - 180, 0)
 
-const XADREZ = 'repeating-conic-gradient(#1c1c1e 0 25%, #fff 0 50%) 0 0 / 5px 5px'
+const LEGENDA = [
+  ['Trajetória', 'text-emerald-500'],
+  ['Robô', 'text-cyan-400'],
+  ['Início', 'text-emerald-500'],
+  ['Meta', 'text-amber-500'],
+]
 
 type Props = { linhas: number; colunas: number; trajetoria: Posicao[] }
 
@@ -21,7 +26,7 @@ export function Percurso({ linhas, colunas, trajetoria }: Props) {
   const atual = passo === null ? fim : Math.min(passo, fim)
   const rodando = tocando && atual < fim
   const visivel = trajetoria.slice(0, atual + 1)
-  const kart = visivel.at(-1)
+  const robo = visivel.at(-1)
 
   useEffect(() => {
     if (!rodando) return
@@ -43,60 +48,52 @@ export function Percurso({ linhas, colunas, trajetoria }: Props) {
 
   return (
     <>
-      <svg viewBox={`-3 -3 ${w + 6} ${h + 6}`} className="max-h-[70vh] w-full">
+      <svg viewBox={`-2 -2 ${w + 4} ${h + 4}`} className="mx-auto max-h-[60vh] w-full max-w-md">
         <defs>
           <pattern id="grade" width={C} height={C} patternUnits="userSpaceOnUse">
-            <rect width={C} height={C} className="fill-piso" />
-            <path d={`M ${C} 0 L 0 0 0 ${C}`} fill="none" stroke="#45454c" strokeWidth={1} />
-          </pattern>
-          <pattern id="xadrez" width={8} height={8} patternUnits="userSpaceOnUse">
-            <rect width={8} height={8} fill="#fff" />
-            <rect width={4} height={4} className="fill-piso" />
-            <rect x={4} y={4} width={4} height={4} className="fill-piso" />
+            <path d={`M ${C} 0 L 0 0 0 ${C}`} fill="none" className="stroke-grade" strokeWidth={1} />
           </pattern>
         </defs>
         <rect width={w} height={h} fill="url(#grade)" />
-        <rect width={w} height={h} fill="none" className="stroke-topo" strokeWidth={3} />
-        <rect x={mx - 12} y={my - 12} width={24} height={24} fill="url(#xadrez)" />
+        <rect width={w} height={h} fill="none" stroke="#6366f1" strokeWidth={1.2} />
         <polyline
           points={visivel.map(p => centro(p).join(',')).join(' ')}
           fill="none"
-          className="stroke-trajeto"
-          strokeWidth={4}
+          stroke="#10b981"
+          strokeWidth={1.5}
           strokeLinejoin="round"
           strokeLinecap="round"
         />
-        <circle cx={ix} cy={iy} r={6} className="fill-green-500" />
-        {kart && (
+        <Marcador x={ix} y={iy} letra="S" cor="#10b981" />
+        <Marcador x={mx} y={my} letra="F" cor="#f59e0b" />
+        {robo && (
           <g
             style={{
-              transform: `translate(${centro(kart)[0]}px, ${centro(kart)[1]}px) rotate(${anguloAcumulado(visivel)}deg)`,
+              transform: `translate(${centro(robo)[0]}px, ${centro(robo)[1]}px) rotate(${anguloAcumulado(visivel)}deg)`,
               transition: 'transform 0.3s',
             }}
           >
-            <image href="/imgs/kart.png" x={-C / 2} y={-C / 2} width={C} height={C} />
+            <circle r={8} fill="#22d3ee" opacity={0.2} />
+            <circle r={5} fill="#22d3ee" />
+            <path d="M 0 -2.8 L 2.4 2 L -2.4 2 Z" fill="#0b1626" />
           </g>
         )}
       </svg>
 
-      <ul className="mt-4 flex flex-wrap gap-6 text-xs text-apagado">
-        <li className="flex items-center gap-2">
-          <span className="h-1 w-5 rounded-full bg-trajeto" /> Trajetória
-        </li>
-        <li className="flex items-center gap-2">
-          <span className="size-2.5 rounded-full bg-green-500" /> Início
-        </li>
-        <li className="flex items-center gap-2">
-          <span className="size-2.5" style={{ background: XADREZ }} /> Meta
-        </li>
+      <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2 px-2 text-xs text-slate-300">
+        {LEGENDA.map(([nome, cor]) => (
+          <li key={nome}>
+            <span className={cor}>●</span> {nome}
+          </li>
+        ))}
       </ul>
 
-      <div className="mt-4 flex items-center gap-4 border-t border-linha pt-4">
+      <div className="mt-3 flex items-center gap-4 border-t border-slate-800 pt-3">
         <button
           type="button"
           onClick={alternar}
           disabled={fim < 1}
-          className="w-32 shrink-0 rounded-sm bg-tinta px-3 py-2 text-xs font-medium text-parede transition-colors hover:bg-topo disabled:opacity-30 disabled:hover:bg-tinta"
+          className="shrink-0 rounded-md border border-cyan-800/70 bg-cyan-950/60 px-3 py-1.5 text-xs text-cyan-400 transition-colors hover:bg-cyan-900/60 disabled:opacity-40"
         >
           {rodando ? '❚❚ Pausar' : '▶ Reproduzir'}
         </button>
@@ -112,12 +109,20 @@ export function Percurso({ linhas, colunas, trajetoria }: Props) {
             setTocando(false)
             setPasso(v >= fim ? null : v)
           }}
-          className="w-full accent-topo"
+          className="barra-replay w-full"
         />
-        <span className="shrink-0 text-xs tabular-nums text-apagado">
-          {atual + 1}/{fim + 1}
-        </span>
       </div>
     </>
+  )
+}
+
+function Marcador({ x, y, letra, cor }: { x: number; y: number; letra: string; cor: string }) {
+  return (
+    <g>
+      <circle cx={x} cy={y} r={5} fill={cor} />
+      <text x={x} y={y} textAnchor="middle" dominantBaseline="central" fontSize={6} fontWeight={700} fill="#0b1626">
+        {letra}
+      </text>
+    </g>
   )
 }

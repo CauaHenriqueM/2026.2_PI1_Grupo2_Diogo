@@ -26,10 +26,3 @@ export type Telemetria ={
         colunas: number;
     }
 };
-
-
-export type Log = { 
-    hora: string;
-    nivel: 'info' | 'aviso' | 'erro';
-    mensagem: string
-};
