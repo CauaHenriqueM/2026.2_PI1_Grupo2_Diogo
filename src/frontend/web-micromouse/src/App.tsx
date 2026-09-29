@@ -10,7 +10,7 @@ function App() {
         <Route path="/labirinto" element={<LabirintoPage />} />
       </Routes>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
