@@ -1,29 +1,49 @@
-import type { MotorData } from "../../types/telemetry";
+import { TelemetryCard } from "./TelemetryCard";
 
 interface MotorRPMCardProps {
-  motors: MotorData;
+  leftRpm: number;
+  rightRpm: number;
 }
 
-export function MotorRPMCard({ motors }: MotorRPMCardProps) {
+export function MotorRPMCard({
+  leftRpm,
+  rightRpm,
+}: MotorRPMCardProps) {
   return (
-    <div className="telemetry-card">
-      <span className="telemetry-label">
-        RPM dos motores
-      </span>
+    <TelemetryCard title="Motores">
+      <div className="grid min-w-0 grid-cols-2 gap-2 sm:gap-3">
+        <div className="min-w-0 rounded-lg bg-[#111D30] p-3 sm:p-[14px]">
+          <div className="flex min-w-0 flex-col gap-1">
+            <span className="truncate text-xs text-[#6B7280] sm:text-[13px]">
+              Motor esquerdo
+            </span>
 
-      <div className="motor-values">
-        <div>
-          <span>Esquerdo</span>
-          <strong>{motors.leftRpm}</strong>
-          <small>RPM</small>
+            <strong className="truncate text-xl text-white sm:text-2xl">
+              {leftRpm}
+            </strong>
+
+            <small className="text-[#6B7280]">
+              RPM
+            </small>
+          </div>
         </div>
 
-        <div>
-          <span>Direito</span>
-          <strong>{motors.rightRpm}</strong>
-          <small>RPM</small>
+        <div className="min-w-0 rounded-lg bg-[#111D30] p-3 sm:p-[14px]">
+          <div className="flex min-w-0 flex-col gap-1">
+            <span className="truncate text-xs text-[#6B7280] sm:text-[13px]">
+              Motor direito
+            </span>
+
+            <strong className="truncate text-xl text-white sm:text-2xl">
+              {rightRpm}
+            </strong>
+
+            <small className="text-[#6B7280]">
+              RPM
+            </small>
+          </div>
         </div>
       </div>
-    </div>
+    </TelemetryCard>
   );
 }
