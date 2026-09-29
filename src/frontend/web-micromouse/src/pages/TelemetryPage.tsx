@@ -12,7 +12,7 @@ export function TelemetryPage() {
   const telemetry = useTelemetry();
 
   return (
-    <main className="telemetry-page">
+    <main className="telemetry-page w-full">
       <div className="telemetry-grid">
 
         <ConnectionCard
