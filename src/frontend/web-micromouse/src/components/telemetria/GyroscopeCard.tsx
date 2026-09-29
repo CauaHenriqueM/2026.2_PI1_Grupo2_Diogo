@@ -1,4 +1,5 @@
 import { TelemetryCard } from "./TelemetryCard";
+import GiroSvg from '../../../assets/giro.svg'
 
 interface GyroscopeCardProps {
   x: number;
@@ -12,7 +13,9 @@ export function GyroscopeCard({
   z,
 }: GyroscopeCardProps) {
   return (
-    <TelemetryCard title="Giroscópio">
+    <TelemetryCard title="Giroscópio" icon={
+      <img src={GiroSvg }/>
+    }>
       <div className="grid w-full grid-cols-3 gap-2 sm:gap-2.5">
         <div className="min-w-0 rounded-lg bg-[#111D30] px-2 py-2.5 sm:py-3">
           <div className="flex min-w-0 flex-col gap-1.5">
@@ -49,7 +52,9 @@ export function GyroscopeCard({
             </strong>
           </div>
         </div>
+
       </div>
+
     </TelemetryCard>
   );
 }

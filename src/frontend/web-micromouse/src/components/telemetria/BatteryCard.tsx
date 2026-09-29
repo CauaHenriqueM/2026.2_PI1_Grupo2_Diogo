@@ -1,5 +1,5 @@
 import { TelemetryCard } from "./TelemetryCard";
-
+import batterySvg from '../../../assets/battery.svg'
 interface BatteryCardProps {
   battery: number;
 }
@@ -8,7 +8,7 @@ export function BatteryCard({
   battery,
 }: BatteryCardProps) {
   return (
-    <TelemetryCard title="Bateria">
+    <TelemetryCard title="Bateria" icon={<img src={batterySvg}/>}>
       <div className="flex min-w-0 items-center justify-between">
         <strong className="truncate text-2xl font-bold text-white sm:text-3xl md:text-[34px]">
           {battery}%

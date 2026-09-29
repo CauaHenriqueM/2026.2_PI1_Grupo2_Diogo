@@ -4,6 +4,10 @@ import { MotorRPMCard } from "../components/telemetria/MotorRPMCard";
 import { SpeedCard } from "../components/telemetria/SpeedCard";
 import { useTelemetry } from "../hooks/useTelemetry";
 
+import GiroSvg from '../../assets/giro.svg'
+
+
+
 export function TelemetryPage() {
   const telemetry = useTelemetry();
 
@@ -43,6 +47,7 @@ export function TelemetryPage() {
           x={telemetry.gyro.x}
           y={telemetry.gyro.y}
           z={telemetry.gyro.z}
+          
         />
         
       </div>
