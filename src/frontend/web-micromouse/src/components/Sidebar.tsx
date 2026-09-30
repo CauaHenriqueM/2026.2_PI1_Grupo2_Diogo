@@ -8,7 +8,7 @@ import { GoClock } from "react-icons/go";
 import { LuBookText } from "react-icons/lu";
 
 export function Sidebar() {
-  let status = true;
+  const status = true;
   const [IsOpen, setIsOpen] = useState(false);
   function handleClick() {
     console.log(IsOpen);
@@ -16,7 +16,7 @@ export function Sidebar() {
   }
 
   return (
-    <nav className="flex flex-col w-full h-[120px] sm:h-full sm:w-75  bg-[#08111F] border-r-[0.5px] border-[#FFFFFF1A]  sm:pt-9 pt-8 justify-between sm:static fixed">
+    <nav className="flex flex-col w-full h-30 sm:h-full sm:w-75  bg-[#08111F] border-r-[0.5px] border-[#FFFFFF1A]  sm:pt-9 pt-8 justify-between sm:static fixed z-10">
       <div className="flex sm:flex-col items-center sm:justify-start justify-center gap-10  border-b-[0.5px]  border-[#FFFFFF1A] pb-10">
         <div className="  flex items-center justify-center  sm:pr-15   gap-5 ">
           <img

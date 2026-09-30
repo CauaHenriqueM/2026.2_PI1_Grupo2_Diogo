@@ -16,9 +16,11 @@ const LEGENDA = [
   ['Meta', 'text-amber-500'],
 ]
 
-type Props = { linhas: number; colunas: number; trajetoria: Posicao[] }
+type Props = { linhas: number; colunas: number; trajetoria: Posicao[]; mostrarControles?: boolean }
 
-export function Percurso({ linhas, colunas, trajetoria }: Props) {
+export function Percurso({ linhas, colunas, trajetoria, mostrarControles = true }: Props) {
+
+  
   const [passo, setPasso] = useState<number | null>(null)
   const [tocando, setTocando] = useState(false)
 
@@ -88,7 +90,7 @@ export function Percurso({ linhas, colunas, trajetoria }: Props) {
         ))}
       </ul>
 
-      <div className="mt-3 flex items-center gap-4 border-t border-slate-800 pt-3">
+      {mostrarControles && <div className="mt-3 flex items-center gap-4 border-t border-slate-800 pt-3">
         <button
           type="button"
           onClick={alternar}
@@ -111,7 +113,7 @@ export function Percurso({ linhas, colunas, trajetoria }: Props) {
           }}
           className="barra-replay w-full"
         />
-      </div>
+      </div>}
     </>
   )
 }

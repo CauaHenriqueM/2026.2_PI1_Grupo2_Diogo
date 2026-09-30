@@ -1,55 +1,42 @@
-import type { BatteryData } from "../../types/telemetry";
-
+import { TelemetryCard } from "./TelemetryCard";
+import batterySvg from '../../../assets/battery.svg'
 interface BatteryCardProps {
-  battery: BatteryData;
+  battery: number;
 }
 
 export function BatteryCard({
   battery,
 }: BatteryCardProps) {
   return (
-    <div className="telemetry-card">
-      <span className="telemetry-label">
-        Bateria
-      </span>
-
-      <div className="battery-header">
-        <strong className="telemetry-main-value">
-          {battery.percentage.toFixed(0)}%
+    <TelemetryCard title="Bateria" icon={<img src={batterySvg}/>}>
+      <div className="flex min-w-0 items-center justify-between">
+        <strong className="truncate text-2xl font-bold text-white sm:text-3xl md:text-[34px]">
+          {battery}%
         </strong>
       </div>
 
-      <div className="battery-bar">
+      <div className="my-3 h-2 w-full overflow-hidden rounded-full bg-[#1D293D] sm:my-[14px] sm:mb-[18px]">
         <div
-          className="battery-progress"
+          className="
+            h-full rounded-full
+            bg-[#22c55e]
+            transition-[width]
+            duration-300
+            ease-in-out
+          "
           style={{
-            width: `${battery.percentage}%`,
+            width: `${battery}%`,
           }}
         />
       </div>
 
-      <div className="telemetry-details">
-        <div>
-          <span>Tensão</span>
-          <strong>
-            {battery.voltage.toFixed(2)} V
-          </strong>
-        </div>
+      <div className="flex justify-between gap-4 text-sm text-[#6B7280]">
+        <span>Estado</span>
 
-        <div>
-          <span>Consumo</span>
-          <strong>
-            {battery.current.toFixed(2)} A
-          </strong>
-        </div>
-
-        <div>
-          <span>Recarga estimada</span>
-          <strong>
-            {battery.estimatedRechargeMinutes} min
-          </strong>
-        </div>
+        <strong className="text-[#DCE1E9]">
+          {battery > 20 ? "Normal" : "Baixa"}
+        </strong>
       </div>
-    </div>
+    </TelemetryCard>
   );
 }
