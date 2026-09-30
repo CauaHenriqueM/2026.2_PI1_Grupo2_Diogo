@@ -8,7 +8,7 @@ import { GoClock } from "react-icons/go";
 import { LuBookText } from "react-icons/lu";
 
 export function Sidebar() {
-  let status = true;
+  const status = true;
   const [IsOpen, setIsOpen] = useState(false);
   function handleClick() {
     console.log(IsOpen);
