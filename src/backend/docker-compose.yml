@@ -1,0 +1,14 @@
+services:
+    db:
+        image: postgres:18
+        env_file:
+            - .env
+        ports:
+            - "${POSTGRES_PORT}:5432"
+        volumes:
+            - dados_db:/var/lib/postgresql
+            - ./db:/docker-entrypoint-initdb.d:ro
+        restart: unless-stopped
+
+volumes:
+    dados_db:
