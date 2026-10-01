@@ -8,10 +8,10 @@ O cronograma abaixo organiza as tarefas do projeto por entrega, seguindo as data
 | 2 | Planejamento | Requisitos | Levantar os RF/RNF das quatro áreas e escrever as histórias de usuário | 09/09/2026 | 14/09/2026 | Yan Rodrigues | 1 | 100% | Concluído | AP3 |
 | 3 | Planejamento | Estrutura Analítica de Produto (EAP) | Decompor o escopo em entregas e pacotes de trabalho | 14/09/2026 | 16/09/2026 | Yan Rodrigues | 2 | 100% | Concluído | AP4 |
 | 4 | Planejamento | Projeto conceitual | Elaborar o projeto conceitual das quatro áreas | 16/09/2026 | 28/09/2026 | Yan Rodrigues | 3 | 100% | Concluído | AP5 |
-| 4.1 |  |  | Projeto conceitual de Estruturas | 16/09/2026 | 28/09/2026 | Yan Rodrigues | 3 | 100% | Concluído | AP5 |
-| 4.2 |  |  | Projeto conceitual de Energia | 16/09/2026 | 28/09/2026 | Yan Rodrigues | 3 | 100% | Concluído | AP5 |
-| 4.3 |  |  | Projeto conceitual de Hardware (Eletrônica) | 16/09/2026 | 28/09/2026 | Yan Rodrigues | 3 | 100% | Concluído | AP5 |
-| 4.4 |  |  | Projeto conceitual de Software (backlog, arquitetura e MER/DER) | 16/09/2026 | 28/09/2026 | Yan Rodrigues | 3 | 100% | Concluído | AP5 |
+| 4.1 |  |  | Projeto conceitual de Estruturas | 16/09/2026 | 28/09/2026 | Pedro Raposo, Pedro Inácio, João Pedro Duarte, Rodrigo Átila | 3 | 100% | Concluído | AP5 |
+| 4.2 |  |  | Projeto conceitual de Energia | 16/09/2026 | 28/09/2026 | João Pedro Ferreira, Eduardo Waski, João Pedro Gomes, Júlia Massuda | 3 | 100% | Concluído | AP5 |
+| 4.3 |  |  | Projeto conceitual de Hardware (Eletrônica) | 16/09/2026 | 28/09/2026 | Rian Alencar, Ângelo Cordova, Pedro Gomes, Ricardo Branco | 3 | 100% | Concluído | AP5 |
+| 4.4 |  |  | Projeto conceitual de Software (backlog, arquitetura e MER/DER) | 16/09/2026 | 28/09/2026 | Daniel Silva, Gabriel Matos, João Vitor Justo, João Pedro Gonzaga, Cauã Rodrigues | 3 | 100% | Concluído | AP5 |
 | 5 | Planejamento | Cronograma e Orçamento | Elaborar o cronograma e o orçamento do projeto | 28/09/2026 | 30/09/2026 | Yan Rodrigues | 4 | 50% | Em andamento | AP6 |
 | 6 | Execução | Testes de estrutura, energia, hardware e software | Implementar e testar cada área isoladamente | 30/09/2026 | 26/10/2026 | Yan Rodrigues | 5 | 0% | Não iniciado | AP12 |
 | 6.1 |  |  | Construir o chassi e a estrutura mecânica e testá-los (RF-ES01 a ES04, RNF-ES01 a ES06; HUs #96–105) | 30/09/2026 | 26/10/2026 | Pedro Raposo, Pedro Inácio, João Pedro Duarte, Rodrigo Átila | 5 | 0% | Não iniciado | AP12 |
