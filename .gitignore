@@ -5,6 +5,9 @@
 # Adicione outros arquivos a serem ignorados aqui
 # ...
 
+#env
+*.env
+
 # LaTeX
 
 relatorio.pdf
