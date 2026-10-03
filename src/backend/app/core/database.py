@@ -1,11 +1,10 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 from app.core.config import settings
 
 
 engine = create_engine(settings.DATABASE_URL)
-
 
 SessionLocal = sessionmaker(
     bind=engine,
@@ -25,3 +24,8 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+def test_database_connection():
+    with engine.connect() as connection:
+        connection.execute(text("SELECT 1"))
