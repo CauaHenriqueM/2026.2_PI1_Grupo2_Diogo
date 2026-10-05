@@ -1,0 +1,141 @@
+from app.mock.maze import build_seed_maze
+from app.mock.seed import (
+    build_seed_session, build_seed_path,
+    build_seed_metrics, build_seed_events,
+)
+
+
+def test_maze_dimensions():
+    maze = build_seed_maze()
+    assert maze.size == 16
+    assert len(maze.grid) == 16
+    for row in maze.grid:
+        assert len(row) == 16
+
+
+def test_maze_start_and_goal_inside_grid():
+    maze = build_seed_maze()
+    assert 0 <= maze.start.row < 16
+    assert 0 <= maze.start.col < 16
+    assert 0 <= maze.goal.row < 16
+    assert 0 <= maze.goal.col < 16
+    assert maze.start != maze.goal
+
+
+def test_walls_are_symmetric():
+    """
+    Se a célula (r,c) tem parede leste, a (r,c+1) tem parede oeste.
+    Se tem parede sul, a (r+1,c) tem parede norte. E vice-versa.
+    """
+    maze = build_seed_maze()
+    for r in range(16):
+        for c in range(16):
+            cell = maze.grid[r][c]
+
+            if c + 1 < 16:
+                neighbor = maze.grid[r][c + 1]
+                assert cell.wall_plus_x == neighbor.wall_minus_x, \
+                    f"Parede L/O inconsistente entre ({r},{c}) e ({r},{c+1})"
+            else:
+                assert cell.wall_plus_x, f"Borda leste faltando em ({r},{c})"
+
+            if r + 1 < 16:
+                neighbor = maze.grid[r + 1][c]
+                assert cell.wall_minus_y == neighbor.wall_plus_y, \
+                    f"Parede N/S inconsistente entre ({r},{c}) e ({r+1},{c})"
+            else:
+                assert cell.wall_minus_y, f"Borda sul faltando em ({r},{c})"
+
+            if c == 0:
+                assert cell.wall_minus_x, f"Borda oeste faltando em ({r},{c})"
+            if r == 0:
+                assert cell.wall_plus_y, f"Borda norte faltando em ({r},{c})"
+
+
+def test_borders_are_closed():
+    """A borda externa do labirinto deve ser totalmente fechada."""
+    maze = build_seed_maze()
+    for i in range(16):
+        assert maze.grid[0][i].wall_plus_y, f"Borda norte aberta em col {i}"
+        assert maze.grid[15][i].wall_minus_y, f"Borda sul aberta em col {i}"
+        assert maze.grid[i][0].wall_minus_x, f"Borda oeste aberta em row {i}"
+        assert maze.grid[i][15].wall_plus_x, f"Borda leste aberta em row {i}"
+
+
+def test_path_starts_at_maze_start():
+    maze = build_seed_maze()
+    path = build_seed_path()
+    assert path[0].row == maze.start.row
+    assert path[0].col == maze.start.col
+
+def test_path_ends_at_goal():
+    """O path DEVE terminar exatamente no goal."""
+    maze = build_seed_maze()
+    path = build_seed_path()
+    assert len(path) > 0, "Path vazio"
+    last = path[-1]
+    assert last.row == maze.goal.row and last.col == maze.goal.col, (
+        f"Path termina em ({last.row},{last.col}), "
+        f"goal é ({maze.goal.row},{maze.goal.col})"
+    )
+
+
+def test_path_steps_are_orthogonal_neighbors():
+    path = build_seed_path()
+    for a, b in zip(path, path[1:]):
+        dr = abs(a.row - b.row)
+        dc = abs(a.col - b.col)
+        assert dr + dc == 1, f"Passo não-ortogonal: {a} -> {b}"
+
+
+def test_path_does_not_cross_walls():
+    maze = build_seed_maze()
+    path = build_seed_path()
+    for a, b in zip(path, path[1:]):
+        cell = maze.grid[a.row][a.col]
+        dr = b.row - a.row
+        dc = b.col - a.col
+        if dr == -1:
+            assert not cell.wall_plus_y, f"Atravessou parede N em {a} -> {b}"
+        elif dr == 1:
+            assert not cell.wall_minus_y, f"Atravessou parede S em {a} -> {b}"
+        elif dc == -1:
+            assert not cell.wall_minus_x, f"Atravessou parede O em {a} -> {b}"
+        elif dc == 1:
+            assert not cell.wall_plus_x, f"Atravessou parede L em {a} -> {b}"
+
+
+def test_session_shape():
+    s = build_seed_session()
+    assert s.id == "0847"
+    assert s.algorithm == "Flood Fill"
+    assert s.status.value == "finished"
+    assert s.elapsed_seconds >= 0
+
+def test_session_status_matches_path_completion():
+    """Status e path têm que concordar."""
+    s = build_seed_session()
+    maze = build_seed_maze()
+    path = build_seed_path()
+    last = path[-1]
+    reached = (last.row, last.col) == (maze.goal.row, maze.goal.col)
+
+    if s.status.value == "finished":
+        assert reached, "Sessão 'finished' mas path não chegou ao goal"
+    elif s.status.value == "running":
+        assert not reached, "Sessão 'running' mas path já chegou ao goal"
+
+
+def test_metrics_ranges():
+    m = build_seed_metrics()
+    assert m.speed_cm_s >= 0
+    assert m.rpm >= 0
+    assert 0 <= m.battery_pct <= 100
+
+
+def test_events_chronological():
+    events = build_seed_events()
+    assert len(events) > 0
+    for a, b in zip(events, events[1:]):
+        assert a.timestamp <= b.timestamp, "Eventos fora de ordem"
+    assert events[0].message.lower().startswith("sessão iniciada")
