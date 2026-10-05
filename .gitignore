@@ -2,6 +2,7 @@
 .DS_Store
 .vscode
 __pycache__
+.venv
 .pytest_cache
 # Adicione outros arquivos a serem ignorados aqui
 # ...
