@@ -3,11 +3,12 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 from app.mock import state
+from app.mock.seed import SESSION_ID
 
 client = TestClient(app)
 
 def test_path_returns_trajectory():
-    r = client.get("/api/sessions/0847/path")
+    r = client.get(f"/api/sessions/{SESSION_ID}/path")
     assert r.status_code == 200
     assert len(r.json()) == len(state.path)
 
@@ -23,18 +24,18 @@ def test_path_returns_404_when_no_session(resource):
     saved = state.session
     state.session = None
     try:
-        r = client.get(f"/api/sessions/0847/{resource}")
+        r = client.get(f"/api/sessions/{SESSION_ID}/{resource}")
         assert r.status_code == 404
         assert r.json() == {"detail": "No active session found"}
     finally:
         state.session = saved
 
 def test_metrics_returns_current_metrics():
-    r = client.get("/api/sessions/0847/metrics")
+    r = client.get(f"/api/sessions/{SESSION_ID}/metrics")
     assert r.status_code == 200
     assert set(r.json().keys()) == {"speed_cm_s", "rpm", "battery_pct"}
 
 def test_events_returns_log():
-    r = client.get("/api/sessions/0847/events")
+    r = client.get(f"/api/sessions/{SESSION_ID}/events")
     assert r.status_code == 200
     assert len(r.json()) == len(state.events)
