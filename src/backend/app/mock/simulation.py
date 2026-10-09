@@ -44,7 +44,7 @@ def tick() -> None:
 
 
 def update()-> None:
-    if state.session is None and started_at is None:
+    if state.session is None or started_at is None:
         return
     seconds = int((datetime.now(timezone.utc) - started_at).total_seconds())
     while state.session.status == SessionStatus.running and state.session.elapsed_seconds < seconds:
