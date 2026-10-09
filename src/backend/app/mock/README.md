@@ -4,9 +4,9 @@ Enquanto o robô e o banco de dados não estão integrados, os dados da tela Lab
 
 | Arquivo | O que faz |
 |---|---|
-| `__init__.py` | Cria o `state`: os dados em memória que as rotas leem (sessão, labirinto, trajetória, métricas e eventos). |
-| `seed.py` | A sessão de exemplo `0847` (Flood Fill, já concluída), com trajetória, métricas e eventos. |
-| `maze.py` | O labirinto 16×16, desenhado em texto (ASCII) e convertido para o modelo `Maze`. |
+| `__init__.py` | Cria o `state`: os dados em memória que as rotas leem (execução, labirinto, trajetória, métricas e eventos). |
+| `seed.py` | A execução de exemplo `0847` (Flood Fill, já concluída), com trajetória, métricas e eventos. |
+| `maze.py` | O labirinto 4×4, desenhado em texto (ASCII) e convertido para o modelo `Maze`. |
 | `simulation.py` | A simulação: faz o robô andar pela trajetória do seed, uma célula por segundo. |
 | `dev_server.py` | O servidor de desenvolvimento: o mesmo app de produção, com a simulação ligada. |
 
@@ -25,24 +25,24 @@ A issue #111 pede, como tarefa opcional, "nova posição, métrica e evento a ca
 
 ### `start_run()`: rebobina
 
-Põe o robô na primeira célula, com status `running`, tempo 0 e bateria em 100%. Também limpa os eventos, registra o início e guarda em `started_at` o horário em que a corrida começou.
+Põe o robô na primeira célula, com status `em_execucao`, tempo 0 e bateria em 100%. Também limpa os eventos, registra o início e guarda em `started_at` o horário em que a corrida começou.
 
 ### `tick()`: um passo
 
 Cada chamada faz quatro coisas:
 
 1. anda **uma célula**, a próxima da rota (`ROUTE`, que é a trajetória do seed);
-2. soma 1 s ao tempo (`elapsed_seconds`);
+2. soma 1 s ao tempo, ou seja, 1000 em `tempo_total_ms`, que é em milissegundos;
 3. atualiza as **métricas**: 18 cm/s, 101 rpm e bateria 0,5% menor;
 4. registra um **evento** com a nova posição.
 
-Na última célula, o status vira `finished`, a velocidade e o rpm vão a zero e o evento de chegada é registrado. Depois disso, `tick()` não faz mais nada.
+Na última célula, o status vira `concluido`, a velocidade e o rpm vão a zero e o evento de chegada é registrado. Depois disso, `tick()` não faz mais nada.
 
 Para saber qual é a próxima célula, o tamanho da trajetória funciona como marcador de página: com `n` células percorridas, a próxima é `ROUTE[n]`.
 
 ### `update()`: o relógio de 1 s
 
-Não há nada rodando em segundo plano. Quando chega um pedido, `update()` calcula quantos segundos se passaram desde o `start_run()` e chama `tick()` uma vez para cada segundo que ainda não foi contado.
+Não há nada rodando em segundo plano. Quando chega um pedido, `update()` calcula quantos segundos se passaram desde o `start_run()` e chama `tick()` uma vez para cada segundo que ainda não foi contado. Como o tempo da execução é em milissegundos, a comparação é `tempo_total_ms < segundos * 1000`.
 
 Como o front pergunta a cada 1 s, na prática o robô anda uma célula por segundo. Se ninguém perguntar nada por um tempo, o próximo pedido "alcança" tudo de uma vez.
 
@@ -55,7 +55,7 @@ Como o front pergunta a cada 1 s, na prática o robô anda uma célula por segun
 ## Por que assim
 
 - **O código de produção não conhece a simulação.** As rotas e o `main.py` não importam nada dela; só o `dev_server` importa. Por isso o `app.main` nunca carrega a simulação e não gasta memória com ela.
-- **O robô não teletransporta.** Ele segue a trajetória do seed, e os testes de `tests/test_seed.py` garantem que ela não atravessa paredes. Se o seed mudar, por exemplo para um labirinto 4×4, a simulação acompanha sozinha.
+- **O robô não teletransporta.** Ele segue a trajetória do seed, e os testes de `tests/test_seed.py` garantem que ela não atravessa paredes. Quando o seed mudou de 16×16 para 4×4, a simulação acompanhou sozinha, sem nenhuma mudança na lógica.
 - **Os números vêm da documentação do projeto:**
   - cada célula tem 18 cm, então uma célula por segundo dá 18 cm/s;
   - a roda tem 34 mm, ou seja, uns 10,7 cm por volta. A 18 cm/s, isso dá uns 101 rpm;
@@ -102,7 +102,7 @@ while ($true) {
 }
 ```
 
-Deve aparecer uma linha por segundo, de `posicao (1, 0)  bateria 99.5%` até `posicao (15, 15)  bateria 85%`. Para parar, aperte `Ctrl+C`.
+Deve aparecer uma linha por segundo, de `posicao (1, 0)  bateria 99.5%` até `posicao (3, 3)  bateria 97%`, que é a meta, em 6 s. Para parar, aperte `Ctrl+C`.
 
 ## Limitações
 

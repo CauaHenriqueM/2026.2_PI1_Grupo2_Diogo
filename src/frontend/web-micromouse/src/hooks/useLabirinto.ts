@@ -3,9 +3,9 @@ import { api, type ApiPosition } from "../api";
 import type { Posicao, Telemetria } from "../types";
 
 const STATUS: Record<string, Telemetria['status']> = {
-    running: 'Em execução',
-    finished: 'Concluído',
-    interrupted: 'Interrompido'
+    em_execucao: 'Em execução',
+    concluido: 'Concluído',
+    interrompido: 'Interrompido'
 }
 
 function direcao(anterior: ApiPosition | undefined, atual: ApiPosition): Posicao['direcao'] {
@@ -42,7 +42,7 @@ export function useLabirinto(){
                 setTelemetria({
                     status: STATUS[sessao.status] ?? 'Interrompido',
                     algoritmo: sessao.algorithm,
-                    tempoMS: sessao.elapsed_seconds*1000,
+                    tempoMS: sessao.tempo_total_ms ?? 0,
                     celulasPercorridas: caminho.length,
                     posicao: pontos[pontos.length-1] ?? {x: 0, y: 0, direcao: 'N'},
                     velocidade: metricas.speed_cm_s,

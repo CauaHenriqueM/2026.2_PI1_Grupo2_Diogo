@@ -1,4 +1,5 @@
 from app.mock.maze import build_seed_maze
+from app.models import ExecutionStatus
 from app.mock.seed import (
     build_seed_execution, build_seed_path,
     build_seed_metrics, build_seed_events,
@@ -129,9 +130,9 @@ def test_session_status_matches_path_completion():
     last = path[-1]
     reached = (last.row, last.col) == (maze.goal.row, maze.goal.col)
 
-    if s.status.value == "finished":
+    if s.status.value == ExecutionStatus.finished:
         assert reached, "Sessão 'finished' mas path não chegou ao goal"
-    elif s.status.value == "running":
+    elif s.status.value == ExecutionStatus.running:
         assert not reached, "Sessão 'running' mas path já chegou ao goal"
 
 

@@ -152,8 +152,8 @@ O endereço do backend vem da variável `API_URL`:
 | API | Tela |
 |---|---|
 | `row`, `col` | `x` = coluna, `y` = linha |
-| `status`: `running`, `finished`, `interrupted` | `Em execução`, `Concluído`, `Interrompido` |
-| `elapsed_seconds` | `tempoMS` (× 1000) |
+| `status`: `em_execucao`, `concluido`, `interrompido` | `Em execução`, `Concluído`, `Interrompido` |
+| `tempo_total_ms` | `tempoMS` (já vem em milissegundos; se vier `null`, vira 0) |
 | `speed_cm_s`, `rpm`, `battery_pct` | `velocidade`, `rpm`, `bateria` |
 | `size` do labirinto | `linhas` e `colunas` da grade |
 | (calculada) | `direcao` do robô, comparando cada célula com a anterior |

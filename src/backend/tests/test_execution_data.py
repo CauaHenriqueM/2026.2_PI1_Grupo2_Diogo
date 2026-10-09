@@ -62,3 +62,4 @@ def test_events_returns_log():
     r = client.get(f"/api/sessions/{EXECUTION_ID}/events")
     assert r.status_code == 200
     assert len(r.json()) == len(state.events)
+    

@@ -3,7 +3,7 @@ export type ApiSession ={
     id: string,
     status: string,
     algorithm: string,
-    elapsed_seconds: number,
+    tempo_total_ms: number | null,
 }
 
 export type ApiPosition = {
@@ -14,10 +14,10 @@ export type ApiPosition = {
 export type ApiMaze = {
     size: number
     grid: {
-        wall_plus_y: boolean;
-        wall_minus_y: boolean;
-        wall_plus_x: boolean;
-        wall_minus_x: boolean;
+        parede_norte: boolean;
+        parede_sul: boolean;
+        parede_leste: boolean;
+        parede_oeste: boolean;
     }[][]
     start: ApiPosition
     goal: ApiPosition
