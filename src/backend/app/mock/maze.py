@@ -1,8 +1,8 @@
 from app.models import Maze, Cell, Position
 
 
-# Labirinto 16x16.
-#   '+'  canto
+# Labirinto 4x4.
+#   '+'  canto da célula
 #   '---' parede horizontal
 #   '|'  parede vertical
 #   ' '  passagem
@@ -16,45 +16,23 @@ from app.models import Maze, Cell, Position
 # As linhas pares (com '+' e '---') mostram as paredes horizontais.
 
 _MAZE_ASCII = """\
-+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-| S         |           |                                       |
-+   +---+   +   +---+   +   +---+---+---+   +---+---+---+---+   +
-|   |       |   |       |   |           |   |                   |
-+   +   +---+   +   +---+   +---+   +   +   +---+   +---+---+   +
-|   |   |       |       |       |   |       |       |           |
-+   +   +   +---+---+   +---+   +   +---+---+   +   +   +---+   +
-|   |   |   |           |       |       |       |   |       |   |
-+   +   +   +   +---+---+   +---+---+   +   +---+   +   +   +   +
-|   |   |   |   |           |           |   |       |   |   |   |
-+   +   +   +   +   +---+---+   +---+---+   +   +---+   +   +   +
-|   |   |   |   |   |           |           |   |       |   |   |
-+   +   +   +   +   +   +---+---+   +---+---+   +   +---+   +   +
-|   |   |   |   |   |   |           |           |   |       |   |
-+   +   +   +   +   +   +   +---+---+   +---+---+   +   +---+   +
-|   |   |   |   |   |   |   |           |           |   |       |
-+   +   +   +   +   +   +   +   +---+---+   +---+---+   +   +   +
-|   |   |   |   |   |   |   |   |           |           |   |   |
-+   +   +   +   +   +   +   +   +   +---+---+   +---+---+   +   +
-|   |   |   |   |   |   |   |   |   |           |           |   |
-+   +   +   +   +   +   +   +   +   +   +---+---+   +---+---+   +
-|   |   |   |   |   |   |   |   |   |   |           |           |
-+   +   +   +   +   +   +   +   +   +   +   +---+---+   +---+   +
-|   |   |   |   |   |   |   |   |   |   |   |           |       |
-+   +   +   +   +   +   +   +   +   +   +   +   +---+---+   +   +
-|   |   |   |   |   |   |   |   |   |   |   |   |           |   |
-+   +   +   +   +   +   +   +   +   +   +   +   +   +---+---+   +
-|   |   |   |   |   |   |   |   |   |   |   |   |   |           |
-+   +   +   +   +   +   +   +   +   +   +   +   +   +   +---+   +
-|   |   |   |   |   |   |   |   |   |   |   |   |   |   |       |
-+   +   +   +   +   +   +   +   +   +   +   +   +   +   +   +---+
-|                                                             G |
-+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
++---+---+---+---+
+| S             |
++   +---+   +   +
+|   |       |   |
++   +   +---+   +
+|   |   |       |
++   +   +   +---+
+|             G |        
++---+---+---+---+
 """
 
 
 def _parse_ascii_maze(raw: str) -> tuple[list[list[Cell]], Position, Position]:
     lines = raw.splitlines()
-    size = 16
+
+    cell_lines = lines[1::2]
+    size = len(cell_lines) #any N size works based on the model
 
     grid: list[list[Cell]] = []
     start = Position(row=0, col=0)
@@ -105,4 +83,5 @@ def _parse_ascii_maze(raw: str) -> tuple[list[list[Cell]], Position, Position]:
 
 def build_seed_maze() -> Maze:
     grid, start, goal = _parse_ascii_maze(_MAZE_ASCII)
-    return Maze(size=16, grid=grid, start=start, goal=goal)
+    size = len(grid) #toma do grid o tamanho certo,n depende de colocar o valor aqui
+    return Maze(size=size, grid=grid, start=start, goal=goal)

@@ -5,20 +5,20 @@ from app.mock.seed import (
 )
 
 
-def test_maze_dimensions():
+def test_maze_dimensions(): #16x16 originalmente
     maze = build_seed_maze()
-    assert maze.size == 16
-    assert len(maze.grid) == 16
+    assert maze.size == len(maze.grid)
     for row in maze.grid:
-        assert len(row) == 16
+        assert len(row) == maze.size
 
 
 def test_maze_start_and_goal_inside_grid():
     maze = build_seed_maze()
-    assert 0 <= maze.start.row < 16
-    assert 0 <= maze.start.col < 16
-    assert 0 <= maze.goal.row < 16
-    assert 0 <= maze.goal.col < 16
+    n = maze.size
+    assert 0 <= maze.start.row < n
+    assert 0 <= maze.start.col < n
+    assert 0 <= maze.goal.row < n
+    assert 0 <= maze.goal.col < n
     assert maze.start != maze.goal
 
 
@@ -28,18 +28,20 @@ def test_walls_are_symmetric():
     Se tem parede sul, a (r+1,c) tem parede norte. E vice-versa.
     """
     maze = build_seed_maze()
-    for r in range(16):
-        for c in range(16):
+    n = maze.size
+
+    for r in range(n):
+        for c in range(n):
             cell = maze.grid[r][c]
 
-            if c + 1 < 16:
+            if c + 1 < n:
                 neighbor = maze.grid[r][c + 1]
                 assert cell.wall_plus_x == neighbor.wall_minus_x, \
                     f"Parede L/O inconsistente entre ({r},{c}) e ({r},{c+1})"
             else:
                 assert cell.wall_plus_x, f"Borda leste faltando em ({r},{c})"
 
-            if r + 1 < 16:
+            if r + 1 < n:
                 neighbor = maze.grid[r + 1][c]
                 assert cell.wall_minus_y == neighbor.wall_plus_y, \
                     f"Parede N/S inconsistente entre ({r},{c}) e ({r+1},{c})"
@@ -55,11 +57,13 @@ def test_walls_are_symmetric():
 def test_borders_are_closed():
     """A borda externa do labirinto deve ser totalmente fechada."""
     maze = build_seed_maze()
-    for i in range(16):
+    n = maze.size
+
+    for i in range(n):
         assert maze.grid[0][i].wall_plus_y, f"Borda norte aberta em col {i}"
-        assert maze.grid[15][i].wall_minus_y, f"Borda sul aberta em col {i}"
+        assert maze.grid[3][i].wall_minus_y, f"Borda sul aberta em col {i}"
         assert maze.grid[i][0].wall_minus_x, f"Borda oeste aberta em row {i}"
-        assert maze.grid[i][15].wall_plus_x, f"Borda leste aberta em row {i}"
+        assert maze.grid[i][3].wall_plus_x, f"Borda leste aberta em row {i}"
 
 
 def test_path_starts_at_maze_start():

@@ -11,11 +11,24 @@ def test_maze_returns_grid():
     r = client.get(f"/api/sessions/{SESSION_ID}/maze")
     assert r.status_code == 200
     body = r.json()
-    assert body["size"] == 16
-    assert len(body["grid"]) == 16
-    assert all(len(row) == 16 for row in body["grid"])
-    assert body["start"] == {"row": 0, "col": 0}
-    assert body["goal"] == {"row": 15, "col": 15}
+
+    n = body["size"]
+    assert len(body["grid"]) == n
+    assert all(len(row) == n for row in body["grid"])
+
+    # start e goal dentro do grid
+    assert 0 <= body["start"]["row"] < n
+    assert 0 <= body["start"]["col"] < n
+    assert 0 <= body["goal"]["row"] < n
+    assert 0 <= body["goal"]["col"] < n
+    assert body["start"] != body["goal"]
+
+    for row in body["grid"]:
+        for cell in row:
+            assert set(cell.keys()) =={
+                "wall_plus_y", "wall_minus_y", "wall_plus_x", "wall_minus_x",
+            }
+            assert all(isinstance(v, bool) for v in cell.values())
 
 def test_path_returns_trajectory():
     r = client.get(f"/api/sessions/{SESSION_ID}/path")

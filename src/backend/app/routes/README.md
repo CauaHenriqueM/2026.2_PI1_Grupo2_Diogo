@@ -15,7 +15,7 @@ navegador ──► frontend (:5173) ──proxy /api──► backend (:8000)
                                                             montados quando o servidor liga
 ```
 
-1. Ao ligar, o backend monta uma sessão de exemplo (`0847`, algoritmo Flood Fill) num labirinto 16×16 fixo. É o *seed*.
+1. Ao ligar, o backend monta uma sessão de exemplo (`0847`, algoritmo Flood Fill) num labirinto 4×4 fixo. É o *seed*.
 2. Cada rota lê esse estado e devolve JSON. Os modelos de `app/models` garantem o formato.
 3. O frontend pergunta a cada 1 s (*polling*) e redesenha a tela.
 
