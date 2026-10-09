@@ -26,7 +26,7 @@ def test_maze_returns_grid():
     for row in body["grid"]:
         for cell in row:
             assert set(cell.keys()) =={
-                "wall_plus_y", "wall_minus_y", "wall_plus_x", "wall_minus_x",
+                "parede_norte", "parede_sul", "parede_leste", "parede_oeste",
             }
             assert all(isinstance(v, bool) for v in cell.values())
 

@@ -36,22 +36,22 @@ def test_walls_are_symmetric():
 
             if c + 1 < n:
                 neighbor = maze.grid[r][c + 1]
-                assert cell.wall_plus_x == neighbor.wall_minus_x, \
+                assert cell.parede_leste == neighbor.parede_oeste, \
                     f"Parede L/O inconsistente entre ({r},{c}) e ({r},{c+1})"
             else:
-                assert cell.wall_plus_x, f"Borda leste faltando em ({r},{c})"
+                assert cell.parede_leste, f"Borda leste faltando em ({r},{c})"
 
             if r + 1 < n:
                 neighbor = maze.grid[r + 1][c]
-                assert cell.wall_minus_y == neighbor.wall_plus_y, \
+                assert cell.parede_sul == neighbor.parede_norte, \
                     f"Parede N/S inconsistente entre ({r},{c}) e ({r+1},{c})"
             else:
-                assert cell.wall_minus_y, f"Borda sul faltando em ({r},{c})"
+                assert cell.parede_sul, f"Borda sul faltando em ({r},{c})"
 
             if c == 0:
-                assert cell.wall_minus_x, f"Borda oeste faltando em ({r},{c})"
+                assert cell.parede_oeste, f"Borda oeste faltando em ({r},{c})"
             if r == 0:
-                assert cell.wall_plus_y, f"Borda norte faltando em ({r},{c})"
+                assert cell.parede_norte, f"Borda norte faltando em ({r},{c})"
 
 
 def test_borders_are_closed():
@@ -60,10 +60,10 @@ def test_borders_are_closed():
     n = maze.size
 
     for i in range(n):
-        assert maze.grid[0][i].wall_plus_y, f"Borda norte aberta em col {i}"
-        assert maze.grid[3][i].wall_minus_y, f"Borda sul aberta em col {i}"
-        assert maze.grid[i][0].wall_minus_x, f"Borda oeste aberta em row {i}"
-        assert maze.grid[i][3].wall_plus_x, f"Borda leste aberta em row {i}"
+        assert maze.grid[0][i].parede_norte, f"Borda norte aberta em col {i}"
+        assert maze.grid[3][i].parede_sul, f"Borda sul aberta em col {i}"
+        assert maze.grid[i][0].parede_oeste, f"Borda oeste aberta em row {i}"
+        assert maze.grid[i][3].parede_leste, f"Borda leste aberta em row {i}"
 
 
 def test_path_starts_at_maze_start():
@@ -100,13 +100,13 @@ def test_path_does_not_cross_walls():
         dr = b.row - a.row
         dc = b.col - a.col
         if dr == -1:
-            assert not cell.wall_plus_y, f"Atravessou parede N em {a} -> {b}"
+            assert not cell.parede_norte, f"Atravessou parede N em {a} -> {b}"
         elif dr == 1:
-            assert not cell.wall_minus_y, f"Atravessou parede S em {a} -> {b}"
+            assert not cell.parede_sul, f"Atravessou parede S em {a} -> {b}"
         elif dc == -1:
-            assert not cell.wall_minus_x, f"Atravessou parede O em {a} -> {b}"
+            assert not cell.parede_oeste, f"Atravessou parede O em {a} -> {b}"
         elif dc == 1:
-            assert not cell.wall_plus_x, f"Atravessou parede L em {a} -> {b}"
+            assert not cell.parede_leste, f"Atravessou parede L em {a} -> {b}"
 
 
 def test_execution_shape():

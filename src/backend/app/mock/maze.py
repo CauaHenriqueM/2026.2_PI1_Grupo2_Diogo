@@ -54,14 +54,14 @@ def _parse_ascii_maze(raw: str) -> tuple[list[list[Cell]], Position, Position]:
             content_idx = 4 * c + 2
 
             # parede oeste: char em 4*c
-            wall_minus_x = cell_line[4 * c] == "|"
+            parede_oeste = cell_line[4 * c] == "|"
             # parede leste: char em 4*c + 4
-            wall_plus_x = cell_line[4 * c + 4] == "|"
+            parede_leste = cell_line[4 * c + 4] == "|"
 
             # parede norte: char central da célula na linha de cima
-            wall_plus_y = top_line[content_idx] == "-"
+            parede_norte = top_line[content_idx] == "-"
             # parede sul: char central da célula na linha de baixo
-            wall_minus_y = bottom_line[content_idx] == "-"
+            parede_sul = bottom_line[content_idx] == "-"
 
             # start / goal
             char = cell_line[content_idx]
@@ -71,10 +71,10 @@ def _parse_ascii_maze(raw: str) -> tuple[list[list[Cell]], Position, Position]:
                 goal = Position(row=r, col=c)
 
             row_cells.append(Cell(
-                wall_plus_y=wall_plus_y,
-                wall_minus_y=wall_minus_y,
-                wall_plus_x=wall_plus_x,
-                wall_minus_x=wall_minus_x,
+                parede_norte=parede_norte,
+                parede_sul=parede_sul,
+                parede_leste=parede_leste,
+                parede_oeste=parede_oeste,
             ))
         grid.append(row_cells)
 

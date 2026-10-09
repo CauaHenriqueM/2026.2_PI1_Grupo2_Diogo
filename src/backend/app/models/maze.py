@@ -4,15 +4,16 @@ class Cell(BaseModel):
     """
     Convenção de eixos:
       row cresce para baixo (sul), col cresce para a direita (leste).
-      wall_plus_y  -> parede ao NORTE  (row - 1)
-      wall_minus_y -> parede ao SUL    (row + 1)
-      wall_plus_x  -> parede a LESTE   (col + 1)
-      wall_minus_x -> parede a OESTE   (col - 1)
+
+      parede_norte: parede entre (row, col) e (row - 1, col)
+      parede_sul:   parede entre (row, col) e (row + 1, col)
+      parede_leste: parede entre (row, col) e (row, col + 1)
+      parede_oeste: parede entre (row, col) e (row, col - 1)
     """
-    wall_plus_y: bool = False
-    wall_minus_y: bool = False
-    wall_plus_x: bool = False
-    wall_minus_x: bool = False
+    parede_norte: bool = False
+    parede_sul: bool = False
+    parede_leste: bool = False
+    parede_oeste: bool = False
 
 class Position(BaseModel):
     row: int
