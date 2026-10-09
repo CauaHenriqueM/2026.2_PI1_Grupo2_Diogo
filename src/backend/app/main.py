@@ -1,10 +1,36 @@
 from fastapi import FastAPI
+
+from app.core.database import test_database_connection
 from app.routes import sessions
 
+
 app = FastAPI(
-    title="Maze API",
+    title="Micromouse API",
     version="0.1.0",
-    description="Backend do Labirinto (mock — sem integração com o robô)",
 )
 
 app.include_router(sessions.router, prefix="/api")
+
+@app.get("/")
+def root():
+    return {
+        "message": "Micromouse API funcionando"
+    }
+
+
+@app.get("/health")
+def health():
+    try:
+        test_database_connection()
+
+        return {
+            "status": "ok",
+            "database": "connected",
+        }
+
+    except Exception as error:
+        return {
+            "status": "error",
+            "database": "disconnected",
+            "detail": str(error),
+        }
