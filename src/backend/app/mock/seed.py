@@ -1,21 +1,30 @@
 from datetime import datetime, timedelta, timezone
 
 from app.models import (
-    Session, SessionStatus,
+    Execution, ExecutionStatus, ExecutionResult,
     PathPoint, Metrics,
     Event, EventType,
 )
 
-SESSION_ID = "0847"
+EXECUTION_ID = "0847"
+LABIRINTO_ID = "maze_4x4"
 
 
-def build_seed_session() -> Session:
+def build_seed_execution() -> Execution:
+    now = datetime.now(timezone.utc)
     path = build_seed_path()
-    return Session(
-        id=SESSION_ID,
-        status=SessionStatus.finished,
+
+    return Execution(
+        id=EXECUTION_ID,
+        labirinto_id=LABIRINTO_ID,
+        iniciada_em=now - timedelta(seconds=42),
+        finalizada_em=now,
+        tempo_total_ms=42_000,
+        status=ExecutionStatus.finished,
+        resultado=ExecutionResult.success,
+        velocidade_media_cm_s=12.5,
+        criado_em=now - timedelta(seconds=45),
         algorithm="Flood Fill",
-        elapsed_seconds=42,
     )
 
 

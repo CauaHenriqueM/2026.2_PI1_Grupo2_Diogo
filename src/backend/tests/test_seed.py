@@ -1,6 +1,6 @@
 from app.mock.maze import build_seed_maze
 from app.mock.seed import (
-    build_seed_session, build_seed_path,
+    build_seed_execution, build_seed_path,
     build_seed_metrics, build_seed_events,
 )
 
@@ -109,16 +109,21 @@ def test_path_does_not_cross_walls():
             assert not cell.wall_plus_x, f"Atravessou parede L em {a} -> {b}"
 
 
-def test_session_shape():
-    s = build_seed_session()
+def test_execution_shape():
+    from app.models import ExecutionStatus, ExecutionResult
+    s = build_seed_execution()
     assert s.id == "0847"
+    assert s.labirinto_id == "maze_4x4"
     assert s.algorithm == "Flood Fill"
-    assert s.status.value == "finished"
-    assert s.elapsed_seconds >= 0
+    assert s.status == ExecutionStatus.finished
+    assert s.resultado == ExecutionResult.success
+    assert s.iniciada_em <= s.finalizada_em
+    assert s.tempo_total_ms is not None and s.tempo_total_ms >= 0
+    assert s.criado_em <= s.iniciada_em
 
 def test_session_status_matches_path_completion():
     """Status e path têm que concordar."""
-    s = build_seed_session()
+    s = build_seed_execution()
     maze = build_seed_maze()
     path = build_seed_path()
     last = path[-1]

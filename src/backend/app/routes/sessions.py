@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 
 from app.mock import state
-from app.models import Session
+from app.models import Execution
 from app.models import PathPoint
 from app.models import Metrics
 from app.models import Event
@@ -11,13 +11,13 @@ router = APIRouter(tags=["sessions"])
 SESSION_NOT_FOUND = {"description": "No active session found"} #usar pra avisar o 404
 
 def check_active_session(session_id: str) -> None: #da o 404 se nao existir
-    if state.session is None or state.session.id != session_id:
+    if state.execution is None or state.execution.id != session_id:
         raise HTTPException(status_code=404, detail="No active session found")
 
 
-@router.get("/sessions/active", response_model=Session | None)
-def get_active_session() -> Session | None:
-    return state.session
+@router.get("/sessions/active", response_model=Execution | None)
+def get_active_session() -> Execution | None:
+    return state.execution
 
 @router.get("/sessions/{session_id}/maze", response_model=Maze, responses={404: SESSION_NOT_FOUND})
 def get_session_maze(session_id: str) -> Maze:

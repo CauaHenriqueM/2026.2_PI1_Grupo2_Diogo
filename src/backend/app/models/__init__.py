@@ -1,11 +1,11 @@
-from .session import Session, SessionStatus
+from .execution import Execution, ExecutionStatus, ExecutionResult
 from .maze import Maze, Cell, Position
 from .path import PathPoint
 from .metrics import Metrics
 from .event import Event, EventType
 
 __all__ = [
-    "Session", "SessionStatus",
+    "Execution", "ExecutionStatus", "ExecutionResult",
     "Maze", "Cell", "Position",
     "PathPoint",
     "Metrics",
