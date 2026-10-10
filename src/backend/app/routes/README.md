@@ -101,6 +101,7 @@ Use `python -m pytest`, e não só `pytest`. O `-m` coloca a pasta atual no cami
 | `tests/test_seed.py` | O labirinto e a trajetória do seed: tamanho, bordas fechadas, paredes simétricas e um caminho que não atravessa parede. |
 | `tests/test_routes.py` | `GET /api/sessions/active`, com e sem execução. |
 | `tests/test_execution_data.py` | `/maze`, `/path`, `/metrics` e `/events`, e o 404 de todas elas, tanto para id desconhecido quanto para quando não há execução. |
+| `tests/test_database.py` | O link com o PostgreSQL: o `/health` responde `connected` e o que o `app/mock/seed_db.py` gravou bate com o mock (trajetória e paredes). Precisa do banco no ar: com a porta fechada é pulado; com a senha errada, falha. |
 
 - Os testes de 404 usam `@pytest.mark.parametrize`: o mesmo teste roda uma vez para cada rota da lista. Se surgir uma rota nova com `{id}`, é só incluir o nome dela na lista.
 - Os testes não carregam a simulação. Por isso os dados não mudam com o tempo e o resultado é sempre o mesmo.
